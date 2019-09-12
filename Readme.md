@@ -12,3 +12,6 @@ https://github.com/openai/finetune-transformer-lm
 GPT-2
 https://openai.com/blog/better-language-models/
 https://github.com/openai/gpt-2
+
+Clone including submodules:
+git clone --recurse-submodules -j8 https://github.com/bbboll/aser_comet
