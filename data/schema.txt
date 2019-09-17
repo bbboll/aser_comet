@@ -42,3 +42,5 @@ sqlite> SELECT COUNT(DISTINCT event1_id) FROM Relations;
 4.386.302
 sqlite> SELECT COUNT(DISTINCT event2_id) FROM Relations;
 514.264
+
+Unique IDs in Relations: 8.146.286
