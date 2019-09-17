@@ -1,0 +1,44 @@
+sqlite> .tables
+Eventualities  Relations    
+
+sqlite> .schema Eventualities
+CREATE TABLE Eventualities (
+	_id PRIMARY KEY,
+	verbs TEXT,
+	skeleton_words_clean TEXT,
+	skeleton_words TEXT,
+	words TEXT,
+	pattern TEXT,
+	frequency REAL
+);
+SELECT COUNT(*) FROM Eventualities;
+27.565.673
+
+sqlite> .schema Relations
+CREATE TABLE Relations (
+	_id PRIMARY KEY,
+	event1_id TEXT,
+	event2_id TEXT,
+	Precedence REAL,
+	Succession REAL,
+	Synchronous REAL,
+	Reason REAL,
+	Result REAL,
+	Condition REAL,
+	Contrast REAL,
+	Concession REAL,
+	Conjunction REAL,
+	Instantiation REAL,
+	Restatement REAL,
+	ChosenAlternative REAL,
+	Alternative REAL,
+	Exception REAL,
+	Co_Occurrence REAL
+);
+
+sqlite> SELECT COUNT(*) FROM Relations;
+8.834.257
+sqlite> SELECT COUNT(DISTINCT event1_id) FROM Relations;
+4.386.302
+sqlite> SELECT COUNT(DISTINCT event2_id) FROM Relations;
+514.264

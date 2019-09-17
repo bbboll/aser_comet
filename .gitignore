@@ -8,6 +8,8 @@ __pycache__/
 
 # databases
 *.db
+*.npz
+*.npy
 
 # demo binaries
 cpp-nd/demo/cholmod_demo

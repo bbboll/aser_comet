@@ -1,3 +1,6 @@
+# Installation
+Follow instructions in the [COMET submodule](https://github.com/atcbosselut/comet-commonsense) to download model files and install dependencies.
+
 # Resources
 
 COMET
