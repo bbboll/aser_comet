@@ -18,6 +18,7 @@ path_aserdb = abs_path("data/aser_v0.1.0.db")
 path_relations_npz = abs_path("data/relations.npz")
 path_ids = abs_path("data/ids.npy")
 path_metadat = abs_path("data/meta.npy")
+path_relations_ind = abs_path("data/relations_ind.npy")
 dirpath_datachunks = abs_path("data/chunks/")
 
 # build compressed relations representation
@@ -29,5 +30,6 @@ if not os.path.isfile(path_ids) or not os.path.isfile(path_relations_npz):
 		path_ids
 	)
 
-
-print(find_pickles(dirpath_datachunks))
+# build index array from relations
+if not os.path.isfile(path_relations_ind):
+	ex.extract_relation_ind(path_relations_npz, path_relations_ind)

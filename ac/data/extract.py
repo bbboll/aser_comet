@@ -45,7 +45,17 @@ def resolve_relations(db_file, rel_file, meta_file, id_file):
 			relations[id_lookup[id_out], id_lookup[id_in], :] = row[3:]
 		relations = sparse.COO(relations)
 		sparse.save_npz(rel_file, relations)
+	
 	conn.close()
+
+def extract_relation_ind(rel_file, rel_index_file):
+	"""
+	Save index array for nonzero entries of the 
+	sparse relation tensor at rel_file.
+	"""
+	relations = sparse.load_npz(rel_file)
+	relation_ind = sparse.argwhere(relations > 0)
+	np.save(rel_index_file, relation_ind)
 
 def open_db_connection(db_file):
 	"""
