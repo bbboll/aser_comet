@@ -10,6 +10,7 @@ __pycache__/
 *.db
 *.npz
 *.npy
+*.pickle
 
 # demo binaries
 cpp-nd/demo/cholmod_demo
