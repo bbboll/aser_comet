@@ -4,11 +4,6 @@ if not os.getcwd() in sys.path:
 	sys.path.append(os.getcwd())
 if not os.path.join(os.getcwd(), "COMET") in sys.path:
 	sys.path.append(os.path.join(os.getcwd(), "COMET"))
-"""
-You may regard this technique of managing python modules as hacky
-and I agree. This is, however, the way the COMET authors chose
-to do it and I will concede that it is quite a glorious hack.
-"""
 
 from ac.utils.utils import abs_path, find_pickles
 
