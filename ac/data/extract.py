@@ -1,9 +1,8 @@
-import sqlite3
 import os.path
 import numpy as np
 import sparse
+from ac.data.db import open_db_connection
 
-CHUNK_SIZE = int(1e6)
 RELATION_COUNT = 15
 
 def resolve_relations(db_file, rel_file, meta_file, id_file):
@@ -57,33 +56,4 @@ def extract_relation_ind(rel_file, rel_index_file):
 	relation_ind = sparse.argwhere(relations > 0)
 	np.save(rel_index_file, relation_ind)
 
-def open_db_connection(db_file):
-	"""
-	"""
-	return sqlite3.connect(db_file)
 
-def load_eventualities(c, offset=0, limit=CHUNK_SIZE):
-	"""
-	"""
-	query = """
-			SELECT words, frequency 
-			FROM Eventualities 
-			LIMIT ? OFFSET ?;
-			"""
-	data = []
-	for row in c.execute(query, (limit, offset)):
-		data.append(row)
-	return data
-
-def load_relations(c, offset=0, limit=CHUNK_SIZE):
-	"""
-	"""
-	query = """
-			SELECT *
-			FROM Relations 
-			LIMIT ? OFFSET ?;
-			"""
-	data = []
-	for row in c.execute(query, (limit, offset)):
-		data.append(row)
-	return data
