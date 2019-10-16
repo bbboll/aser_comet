@@ -1,0 +1,72 @@
+# src/data/atomic/GenerationDataLoader.load_data()
+
+(Pdb) self.data.keys()
+dict_keys(['train', 'dev', 'test'])
+
+(Pdb) self.data["train"].keys()
+dict_keys(['total'])
+(Pdb) self.data["dev"].keys()
+dict_keys(['total'])
+(Pdb) self.data["test"].keys()
+dict_keys(['total'])
+
+(Pdb) len(self.data["test"]["total"])
+87481
+
+(Pdb) [d for d in self.data["test"]["total"][:10]]
+[
+	('PersonX brings ___ to the people', '<oEffect>', 'benefit materially'), 
+	('PersonX brings ___ to the people', '<oEffect>', 'improve lifestlys'), 
+	('PersonX brings ___ to the people', '<oEffect>', 'Have better lives'), 
+	('PersonX brings ___ to the people', '<oEffect>', 'Grows'), 
+	('PersonX brings ___ to the people', '<oEffect>', 'none'), 
+	('PersonX starves the ___ into submission', '<oEffect>', 'Mane people will try to avoid the starvation.'), 
+	('PersonX starves the ___ into submission', '<oEffect>', 'Many people will fight back the punishment.'), 
+	('PersonX starves the ___ into submission', '<oEffect>', 'have grumbling stomachs'), 
+	('PersonX starves the ___ into submission', '<oEffect>', 'become weak in their bodies'), 
+	('PersonX convinces every ___', '<oEffect>', 'receive new skills')
+]
+
+
+
+
+
+# src/data/atomic/GenerationDataLoader.make_tensors()
+
+(Pdb) self.vocab_encoder
+{ .... 
+'frostbite</w>': 40416, 'exertions</w>': 40417, 'duaal</w>': 40418, 'drier</w>': 40419, 'daintily</w>': 40420, 'conceptions</w>': 40421, 'circulate</w>': 40422, 'chessboard</w>': 40423, 'celle</w>': 40424, 'boutiques</w>': 40425, 'bewildering</w>': 40426, 'bellon': 40427, 'becka</w>': 40428, 'affi': 40429, 'aes': 40430, '4:00</w>': 40431, 'zodiac</w>': 40432, 'wretch': 40433, 'worshippers</w>': 40434, 'virginal</w>': 40435, 'vestra</w>': 40436, 'uuuu': 40437, 'unobtrusively</w>': 40438, 'unveiled</w>': 40439, 'teak</w>': 40440, 'tari': 40441, 'takingly</w>': 40442, 'stake': 40443, 'scrump': 40444, 'restriction</w>': 40445, 'publicist</w>': 40446, 'psychologically</w>': 40447, 'postman</w>': 40448, 'picasso</w>': 40449, 'pappi</w>': 40450, 'nugge': 40451, 'normandy</w>': 40452, 'minneapolis</w>': 40453, 'meagre</w>': 40454, 'marionette</w>': 40455, 'kelthorne</w>': 40456, 'kaine</w>': 40457, 'ktor</w>': 40458, 'jubilation</w>': 40459, 'jung</w>': 40460, 'interject</w>': 40461, 'indefinable</w>': 40462, 'incorrectly</w>': 40463, 'hagen</w>': 40464, 'gauntlets</w>': 40465, 'futuri': 40466, 'familiari': 40467, 'denomin': 40468, 'conspirator</w>': 40469, 'carmela</w>': 40470, 'cited</w>': 40471, 'blogspot.com</w>': 40472, 'blalok</w>': 40473, 'bib</w>': 40474, 'benteley</w>': 40475, 'bachelorette</w>': 40476, '\n</w>': 40477, '<unk>': 0, '<START>': 40478, '<END>': 40479, '<oEffect>': 40480, '<oReact>': 40481, '<oWant>': 40482, '<xAttr>': 40483, '<xEffect>': 40484, '<xIntent>': 40485, '<xNeed>': 40486, '<xReact>': 40487, '<xWant>': 40488, '<blank>': 40489
+}
+
+(Pdb) self.special_chars
+['<START>', '<END>', '<oEffect>', '<oReact>', '<oWant>', '<xAttr>', '<xEffect>', '<xIntent>', '<xNeed>', '<xReact>', '<xWant>', '<blank>']
+
+(Pdb) self.vocab_decoder
+{ ....
+40408: 'makla', 40409: 'maklavir</w>', 40410: 'lingu', 40411: 'licor', 40412: 'initiating</w>', 40413: 'imparted</w>', 40414: 'helstof</w>', 40415: 'guillo', 40416: 'frostbite</w>', 40417: 'exertions</w>', 40418: 'duaal</w>', 40419: 'drier</w>', 40420: 'daintily</w>', 40421: 'conceptions</w>', 40422: 'circulate</w>', 40423: 'chessboard</w>', 40424: 'celle</w>', 40425: 'boutiques</w>', 40426: 'bewildering</w>', 40427: 'bellon', 40428: 'becka</w>', 40429: 'affi', 40430: 'aes', 40431: '4:00</w>', 40432: 'zodiac</w>', 40433: 'wretch', 40434: 'worshippers</w>', 40435: 'virginal</w>', 40436: 'vestra</w>', 40437: 'uuuu', 40438: 'unobtrusively</w>', 40439: 'unveiled</w>', 40440: 'teak</w>', 40441: 'tari', 40442: 'takingly</w>', 40443: 'stake', 40444: 'scrump', 40445: 'restriction</w>', 40446: 'publicist</w>', 40447: 'psychologically</w>', 40448: 'postman</w>', 40449: 'picasso</w>', 40450: 'pappi</w>', 40451: 'nugge', 40452: 'normandy</w>', 40453: 'minneapolis</w>', 40454: 'meagre</w>', 40455: 'marionette</w>', 40456: 'kelthorne</w>', 40457: 'kaine</w>', 40458: 'ktor</w>', 40459: 'jubilation</w>', 40460: 'jung</w>', 40461: 'interject</w>', 40462: 'indefinable</w>', 40463: 'incorrectly</w>', 40464: 'hagen</w>', 40465: 'gauntlets</w>', 40466: 'futuri', 40467: 'familiari', 40468: 'denomin', 40469: 'conspirator</w>', 40470: 'carmela</w>', 40471: 'cited</w>', 40472: 'blogspot.com</w>', 40473: 'blalok</w>', 40474: 'bib</w>', 40475: 'benteley</w>', 40476: 'bachelorette</w>', 40477: '\n</w>', 0: '<unk>', 40478: '<START>', 40479: '<END>', 40480: '<oEffect>', 40481: '<oReact>', 40482: '<oWant>', 40483: '<xAttr>', 40484: '<xEffect>', 40485: '<xIntent>', 40486: '<xNeed>', 40487: '<xReact>', 40488: '<xWant>', 40489: '<blank>'
+}
+
+(Pdb) splits
+['train', 'dev', 'test']
+
+sequences[split]
+[
+	[[3777, 272, 8411, 3777, 272, 535, 40489, 485, 16766], [40480, 2347, 40479]],
+	....
+	[[3777, 272, 7233, 1395, 481, 40489, 666, 6654], [40480, 2347, 40479]], 
+	[[3777, 272, 7233, 1395, 481, 40489, 666, 6654], [40480, 2694, 500, 531, 6014, 40479]]
+]
+
+(Pdb) self.masks[split]
+{'total': [(9, 3), (9, 3), (6, 3), (6, 3), (6, 5), (6, 5), (9, 17), (9, 9), (9, 7), (9, 4), (9, 7), (9, 10), (9, 4), (9, 6), (6, 4), (6, 4), (6, 3), (7, 3), (7, 3), (7, 3), (7, 3), (7, 3), (6, 4), (6, 5), (6, 3), (11, 6), (11, 6), (11, 11), (11, 5), (11, 5), (5, 3), (6, 5), (6, 5), (6, 6), (6, 4), (6, 3), (6, 3), (6, 4), (6, 3), (6, 3), (6, 3), (7, 3), (7, 5), (7, 8), (7, 3), (7, 3), (7, 3), (7, 3), (6, 3), (6, 3), (6, 3), (6, 3), (6, 6), (6, 6), (6, 6), (6, 9), (8, 3), (8, 6), (8, 5), (7, 3), (7, 3), (7, 6), (7, 7), (7, 3), (7, 3), (6, 3), (6, 3), (10, 3), (10, 5), (10, 3), (8, 5), (8, 6), (8, 3), (8, 3), (6, 6), (6, 6), (6, 6), (6, 7), (6, 7), (6, 3), (6, 6), (6, 4), (6, 6), (6, 7), (6, 3), (6, 3), (7, 7), (7, 4), (7, 3), (7, 3), (5, 3), (5, 3), (5, 6), (5, 8), (8, 3), (8, 3), (8, 8), (8, 7), (8, 3), (8, 6)]}
+They are just to identify where the input ends and the label begins.
+(max_event, max_effect) = (12, 17)
+With atomic, its input  = event
+                 output = effect
+
+The data tensor has shape (num_datapoints, max_event + max_effect)
+They fill the rows by filling the first max_event entries from the left with the event data
+and the last max_effect entries (from the left!) with the effect data.
+So for [[3777, 272, 8411, 3777, 272, 535, 40489, 485, 16766], [40480, 2347, 40479]]
+we have
+[3777, 272, 8411, 3777, 272, 535, 40489, 485, 16766, 0, ..., 0, 40480, 2347, 40479, 0, ..., 0]
