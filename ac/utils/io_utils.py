@@ -1,5 +1,6 @@
 import os
 import glob
+import pickle
 
 def abs_path(p):
 	"""
@@ -25,3 +26,13 @@ def any_missing_file(path_list):
 		if not os.path.isfile(p):
 			out = True
 	return out
+
+def missing_file(path):
+	return not os.path.isfile(path)
+
+def load_txt_dataset(path):
+	"""
+	Load pickle at given path.
+	"""
+	with open(path, 'rb') as f:
+		return pickle.load(f)
