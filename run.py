@@ -8,6 +8,8 @@ if not os.path.join(os.getcwd(), "COMET") in sys.path:
 from ac.utils.io_utils import *
 import ac.data.encode as ac_encode
 import torch
+import numpy as np
+import random
 
 # raw data filepaths
 path_aserdb = abs_path("data/aser_v0.1.0.db")
@@ -82,43 +84,55 @@ def build_dataset_encoded():
 def build_dataset_tensors():
     """
     """
-    data_paths = [
+    encoded_paths = [
+        path_encoded_datset_dev,
+        path_encoded_datset_test,
+        path_encoded_datset_train
+    ]
+    tensor_paths = [
         path_tensor_datset_dev,
         path_tensor_datset_test,
         path_tensor_datset_train
     ]
     
-    if any_missing_file(data_paths):        
-        encoder = ac_encode.build_text_encoder()
+    (max_ev1_len, max_ev2_len) = (18, 20) # see mask_statistic.ipynb for reasoning behind these constants
     
-    # TODO: load from encoded because this enables to compute max(seq_len for all seq)
+    for tensor_path, encoded_path in zip(tensor_paths, encoded_paths):
+        if missing_file(tensor_path):
+            print("Working to create", tensor_path)
+            masks = torch.load(encoded_path[:-7]+"_mask.pickle")
+            masks = np.array([list(t) for t in masks])
 
-    # for data_path in data_paths:
-    #     if missing_file(data_path):
-    #         print("Working to create", data_path)
-    #         # load + encode txt data
-    #         data = load_txt_dataset(path_txt_datset_dev)
-    #         data, masks, max_len = ac_encode.encode_dataset(data, encoder)
+            # find indices where the data size is below (max_ev1_len, max_ev2_len)
+            # and shuffle them
+            inds_ev1 = set(np.argwhere(masks[:,0] <= max_ev1_len).flatten().tolist())
+            inds_ev2 = set(np.argwhere(masks[:,1] <= max_ev2_len).flatten().tolist())
+            inds = list(inds_ev1.intersection(inds_ev2))
+            random.shuffle(inds)
 
-    #         # build data tensor
-    #         num_elements = len(data)
-    #         tensor = torch.IntTensor(num_elements, max_len[0]+max_len[1]).fill_(0)
-    #         print("building data tensor...")
-    #         for i, (in_seq, out_seq) in enumerate(data):
-    #             tensor[i,:len(in_seq)] = torch.IntTensor(in_seq)
-    #             tensor[i,max_len[0]:max_len[0]+len(out_seq)] = torch.IntTensor(out_seq)
+            encoded_data = torch.load(encoded_path)
 
-    #         # save data tensor
-    #         torch.save(tensor, data_path)
-    #         print("Data saved to", data_path)
-    #         del tensor
-    #         del data
+            # build data tensor
+            num_elements = len(inds)
+            tensor = torch.IntTensor(num_elements, max_ev1_len+max_ev2_len).fill_(0)
+            print("building data tensor...")
+            for i in range(num_elements):
+                (in_seq, out_seq) = encoded_data[inds[i]]
+                tensor[i,:len(in_seq)] = torch.IntTensor(in_seq)
+                tensor[i,max_ev1_len:max_ev1_len+len(out_seq)] = torch.IntTensor(out_seq)
+
+            # save data tensor
+            torch.save(tensor, tensor_path)
+            print("Data saved to", tensor_path)
+            del tensor
+            del encoded_data
+            del masks
 
 if __name__ == '__main__':
     #prepare_dataset()
 
     # TODO: split dataset into pickles. This is done in a notebook.
 
-    build_dataset_encoded()
-    #build_dataset_tensors()
+    #build_dataset_encoded()
+    build_dataset_tensors()
 
