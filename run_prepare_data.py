@@ -1,9 +1,5 @@
-import sys
+import set_root
 import os
-if not os.getcwd() in sys.path:
-	sys.path.append(os.getcwd())
-if not os.path.join(os.getcwd(), "COMET") in sys.path:
-	sys.path.append(os.path.join(os.getcwd(), "COMET"))
 
 from ac.utils.io_utils import *
 import ac.data.encode as ac_encode
