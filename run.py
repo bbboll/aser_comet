@@ -50,27 +50,33 @@ def prepare_dataset():
 def build_dataset_encoded():
     """
     """
-    data_paths = [
+    encoded_paths = [
         path_encoded_datset_dev,
         path_encoded_datset_test,
         path_encoded_datset_train
     ]
+    data_paths = [
+        path_txt_datset_dev,
+        path_txt_datset_test,
+        path_txt_datset_train
+    ]
+
     
     if any_missing_file(data_paths):        
         encoder = ac_encode.build_text_encoder()
     
-    for data_path in data_paths:
-        if missing_file(data_path):
-            print("Working to create", data_path)
+    for encoded_path, data_path in zip(data_paths):
+        if missing_file(encoded_path):
+            print("Working to create", encoded_path)
             # load + encode txt data
-            data = load_txt_dataset(path_txt_datset_dev)
+            data = load_txt_dataset(data_path)
             data, masks = ac_encode.encode_dataset(data, encoder)
 
             # save data tensor
-            torch.save(data, data_path)
-            mask_savepath = data_path[:-7]+"_mask.pickle"
+            torch.save(data, encoded_path)
+            mask_savepath = encoded_path[:-7]+"_mask.pickle"
             torch.save(masks, mask_savepath)
-            print("Data saved to", data_path)
+            print("Data saved to", encoded_path)
             print("and masks saved to", mask_savepath)
             del masks
             del data
