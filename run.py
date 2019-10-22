@@ -61,9 +61,7 @@ def build_dataset_encoded():
         path_txt_datset_train
     ]
 
-    
-    if any_missing_file(data_paths):        
-        encoder = ac_encode.build_text_encoder()
+    encoder = ac_encode.build_text_encoder()
     
     for encoded_path, data_path in zip(encoded_paths, data_paths):
         if missing_file(encoded_path):
