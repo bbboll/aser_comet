@@ -14,6 +14,7 @@ def load_default():
 	config.train.dynamic = DD(config.train.dynamic)
 	config.data = DD(config.data)
 	config.eval = DD(config.eval)
+	config.train.dynamic.epoch = 0
 	return DD(config)
 
 def get_meta(config):
