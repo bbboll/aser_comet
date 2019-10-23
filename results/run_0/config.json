@@ -1,0 +1,55 @@
+{
+    "net": {
+        "model": "transformer",
+        "nL": 12,
+        "nH": 12,
+        "hSize": 768,
+        "edpt": 0.1,
+        "adpt": 0.1,
+        "rdpt": 0.1,
+        "odpt": 0.1,
+        "pt": "gpt",
+        "afn": "gelu",
+        "init": "pt"
+    },
+    "mle": 0,
+    "dataset": "aser",
+    "train": {
+        "static": {
+            "exp": "generation",
+            "seed": 123,
+            "l2": 0.01,
+            "vl2": true,
+            "lrsched": "warmup_linear",
+            "lrwarm": 0.002,
+            "clip": 1,
+            "loss": "nll",
+            "b2": 0.999,
+            "b1": 0.9,
+            "e": 1e-08
+        },
+        "dynamic": {
+            "lr": 6.25e-05,
+            "bs": 64,
+            "optim": "adam"
+        }
+    },
+    "model": "transformer",
+    "exp": "generation",
+    "data": {
+        "maxe1": 18,
+        "maxe2": 20,
+        "maxr": 1
+    },
+    "eval": {
+        "bs": 1,
+        "smax": 40,
+        "sample": "greedy",
+        "numseq": 1,
+        "gs": 1000,
+        "es": 1000
+    },
+    "trainer": "iteration",
+    "cycle": 1,
+    "iters": 2
+}

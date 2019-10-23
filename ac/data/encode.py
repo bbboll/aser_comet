@@ -23,16 +23,19 @@ def get_relations():
 		"ChosenAlternative",
 		"Alternative",
 		"Exception",
-		"CoOccurrence"	
+		"CoOccurrence"
 	]
 	return relations
+
+def get_special_tokens():
+	return ["<START>", "<END>", "<BLANK>"]
 
 def build_text_encoder():
 	"""
 	Load vocabulary, build text encoder, add special tokens to it.
 	"""
 	text_encoder = TextEncoder(path_encoder, path_bpe)
-	for special_token in ["<START>", "<END>", "<BLANK>"]:
+	for special_token in get_special_tokens():
 		vocab_size = len(text_encoder.encoder)
 		text_encoder.decoder[vocab_size] = special_token
 		text_encoder.encoder[special_token] = vocab_size

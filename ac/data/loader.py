@@ -6,12 +6,15 @@ import json
 import random
 import math
 import torch
+import pickle
 
-from ac.util.io_util import abs_path
+from ac.utils.io_utils import abs_path
 
 
-class DataLoader(object):
-    def __init__(self, opt):
+class GenerationDataLoader(object):
+    def __init__(self, relations):
+        """
+        """
         self.data = {}
         self.data["train"] = {}
         self.data["dev"] = {}
@@ -32,16 +35,7 @@ class DataLoader(object):
         self.offsets["dev"] = {}
         self.offsets["test"] = {}
 
-    def offset_summary(self, split):
-        return self.offsets[split]["total"]
-
-
-class GenerationDataLoader(DataLoader):
-    def __init__(self, opt, categories):
-        super(GenerationDataLoader, self).__init__(opt)
-
-        self.categories = categories
-        self.opt = opt
+        self.relations = relations
 
         for split in self.data:
             self.data[split] = {"total": []}
@@ -52,21 +46,28 @@ class GenerationDataLoader(DataLoader):
         self.special_chars = ["<START>", "<END>", "<BLANK>"]
         self.max_event = 18
         self.max_effect = 20
+    
+    def offset_summary(self, split):
+        return self.offsets[split]["total"]
 
-    def load_data(self, path):
-        # TODO: load data
+    def load_data(self):
+        # load txt data
+        # with open(abs_path("data/train.pickle"), 'rb') as f:
+        #     self.data["train"]["total"] = pickle.load(f)
+        # with open(abs_path("data/dev.pickle"), 'rb') as f:
+        #     self.data["dev"]["total"] = pickle.load(f)
+        # with open(abs_path("data/test.pickle"), 'rb') as f:
+        #     self.data["test"]["total"] = pickle.load(f)
 
         # load tensors
-        self.sequences["train"]["total"] = torch.load(abs_path("data/tensor_train.pickle"))
-        self.sequences["dev"]["total"] = torch.load(abs_path("data/tensor_dev.pickle"))
-        self.sequences["test"]["total"] = torch.load(abs_path("data/tensor_test.pickle"))
+        self.sequences["train"]["total"] = torch.load(abs_path("data/tensor_train.pickle")).type(torch.LongTensor)
+        self.sequences["dev"]["total"] = torch.load(abs_path("data/tensor_dev.pickle")).type(torch.LongTensor)
+        self.sequences["test"]["total"] = torch.load(abs_path("data/tensor_test.pickle")).type(torch.LongTensor)
 
         # load masks
-        self.masks["train"]["total"] = torch.load(abs_path("data/tensor_train_mask.pickle"))
-        self.masks["dev"]["total"] = torch.load(abs_path("data/tensor_dev_mask.pickle"))
-        self.masks["test"]["total"] = torch.load(abs_path("data/tensor_test_mask.pickle"))
-
-        return True
+        self.masks["train"]["total"] = torch.load(abs_path("data/encoded_train_mask.pickle"))
+        self.masks["dev"]["total"] = torch.load(abs_path("data/encoded_dev_mask.pickle"))
+        self.masks["test"]["total"] = torch.load(abs_path("data/encoded_test_mask.pickle"))
 
     def sample_batch(self, split, bs, idxs=None):
         offset = self.offsets[split]["total"]
@@ -122,7 +123,7 @@ class GenerationDataLoader(DataLoader):
             keys = self.data[split].keys()
 
         for key in keys:
-            idxs = list(range(len(self.masks[split][key])))
+            idxs = list(range(len(self.sequences[split][key])))
 
             random.shuffle(idxs)
 
