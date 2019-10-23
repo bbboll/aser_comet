@@ -30,8 +30,9 @@
         },
         "dynamic": {
             "lr": 6.25e-05,
-            "bs": 64,
-            "optim": "adam"
+            "bs": 32,
+            "optim": "adam",
+            "epoch": 0
         }
     },
     "model": "transformer",
@@ -50,6 +51,8 @@
         "es": 1000
     },
     "trainer": "iteration",
-    "cycle": 1,
-    "iters": 2
+    "cycle": 500,
+    "iters": 50000,
+    "gpu_index": "1",
+    "gpu_mode": "T"
 }

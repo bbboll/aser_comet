@@ -71,9 +71,9 @@ if __name__ == '__main__':
 
 	if config.gpu_mode:
 		print("Pushing to GPU: {}".format(config.gpu_index))
-		cfg.device = config.gpu_index
+		cfg.device = int(config.gpu_index)
 		cfg.do_gpu = True
-		torch.cuda.set_device(cfg.device)
+		torch.cuda.device(cfg.device)
 		model.cuda(cfg.device)
 		print("Done.")
 
