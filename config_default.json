@@ -30,7 +30,7 @@
 		}, 
 		"dynamic": {
 			"lr": 6.25e-05,
-			"bs": 64,
+			"bs": 32,
 			"optim": "adam"
 		}
 	}, 
@@ -51,5 +51,7 @@
 	},
 	"trainer": "iteration",
 	"cycle": 500,
-	"iters": 50000
+	"iters": 50000,
+	"gpu_index": 0,
+	"gpu_mode": "T"
 }

@@ -124,7 +124,7 @@ class GenerationDataLoader(object):
 
         for key in keys:
             idxs = list(range(len(self.sequences[split][key])))
-
+            
             random.shuffle(idxs)
 
             self.sequences[split][key] = \

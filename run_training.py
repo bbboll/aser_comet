@@ -10,6 +10,7 @@ import src.train.utils as train_utils
 import src.train.atomic_train as train
 import ac.train.models as models
 import src.data.data as data
+import src.data.config as cfg
 
 from src.data.utils import TextEncoder
 from src.train.opt import OpenAIAdam
@@ -21,16 +22,18 @@ from ac.utils.io_utils import abs_path
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--experiment_num", type=str, default="0")
+parser.add_argument("--gpu_num", type=str, default="0")
 
 if __name__ == '__main__':
+	args = parser.parse_args()
+
 	# configure training run
 	config = ac_conf.load_default()
-	config.iters = 2
-	config.cycle = 1
+	config.train.dynamic.bs = 32
+	config.gpu_index = args.gpu_num
 	meta = ac_conf.get_meta(config)
 
 	# save training run config
-	args = parser.parse_args()
 	savedir = abs_path("results/run_{}".format(args.experiment_num))
 	mkpath(savedir)
 	ac_conf.save_config(config, savedir)
@@ -66,6 +69,14 @@ if __name__ == '__main__':
 
 	print("Done.")
 
+	if config.gpu_mode:
+		print("Pushing to GPU: {}".format(config.gpu_index))
+		cfg.device = config.gpu_index
+		cfg.do_gpu = True
+		torch.cuda.set_device(cfg.device)
+		model.cuda(cfg.device)
+		print("Done.")
+
 	print("Training")
 
 	optimizer = OpenAIAdam(model.parameters(),
@@ -84,6 +95,6 @@ if __name__ == '__main__':
 	trainer = train.make_trainer(
 		config, meta, data_loader, model, optimizer)
 	trainer.set_evaluator(config, model, data_loader)
-	import pdb; pdb.set_trace()
+	#import pdb; pdb.set_trace()
 	
 	trainer.run()
