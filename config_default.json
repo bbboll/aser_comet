@@ -49,6 +49,12 @@
 		"gs": 1000,
 		"es": 1000
 	},
+	"eval_sampler": "greedy",
+	"gen_seqlength": 40,
+	"num_sequences": 1,
+    "generate_sequences": 1000,
+    "evaluate_sequences": 1000,
+    "random_seed": 123,
 	"trainer": "iteration",
 	"cycle": 500,
 	"iters": 50000,
