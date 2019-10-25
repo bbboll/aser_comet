@@ -53,6 +53,6 @@
     "trainer": "iteration",
     "cycle": 500,
     "iters": 50000,
-    "gpu_index": "1",
-    "gpu_mode": "T"
+    "gpu_index": "0",
+    "gpu_mode": false
 }

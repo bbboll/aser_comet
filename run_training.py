@@ -23,6 +23,7 @@ from ac.utils.io_utils import abs_path
 parser = argparse.ArgumentParser()
 parser.add_argument("--experiment_num", type=str, default="0")
 parser.add_argument("--gpu_num", type=str, default="0")
+parser.add_argument("--checkpoint", type=str, default=None)
 
 if __name__ == '__main__':
 	args = parser.parse_args()
@@ -30,6 +31,7 @@ if __name__ == '__main__':
 	# configure training run
 	config = ac_conf.load_default()
 	config.train.dynamic.bs = 32
+	config.gpu_mode = False
 	config.gpu_index = args.gpu_num
 	meta = ac_conf.get_meta(config)
 
@@ -61,13 +63,18 @@ if __name__ == '__main__':
 	n_vocab = len(text_encoder.encoder) + n_ctx
 	config.net.vSize = n_vocab
 
-	print("Building Model")
-
-	model = models.make_model(
-		config, n_vocab, n_ctx, n_special,
-		load=True)
-
-	print("Done.")
+	if args.checkpoint != None:
+		print("Loading model from checkpoint")
+		model = models.make_model(config, n_vocab, n_ctx, n_special, load=False)
+		checkpoint = torch.load(abs_path(args.checkpoint), map_location=torch.device("cpu"))
+		model.load_state_dict(checkpoint["state_dict"])
+		print("Done.")
+	else:
+		print("Building Model")
+		model = models.make_model(
+			config, n_vocab, n_ctx, n_special,
+			load=True)
+		print("Done.")
 
 	if config.gpu_mode:
 		print("Pushing to GPU: {}".format(config.gpu_index))
