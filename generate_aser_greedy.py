@@ -138,7 +138,6 @@ def append_batch(X, next_idx, mask):
     next_mask = torch.cat([mask, torch.ones(X.size(0), 1, device=mask.device)], 1)
     return torch.cat((X, next_x), 1), next_mask
 
-
 data_loader.reset_offsets(splits=split, shuffle=False)
 
 if args.generation_set_size == "full":
@@ -174,7 +173,7 @@ eval_file_name = eval_file_name.replace("models/", "results/gens/")
 print("Saving generations to: {}".format(eval_file_name))
 
 with torch.no_grad():
-    for idx in tqdm(total):
+    for idx in tqdm(total[:1000]):
         sequence_all = {}
 
         batch, reset = data_loader.sample_batch(split=split, bs=1, idxs=[idx])
@@ -184,14 +183,14 @@ with torch.no_grad():
         MMB = batch["attention_mask"][:, :context_size_event + 1]
 
         init = "".join([text_encoder.decoder[i].replace('</w>', ' ').replace(
-                "<blank>", "___ ") for i in XMB[:, :-1].squeeze().tolist() if i])
-        attr = text_encoder.decoder[XMB[:, -1].item()].strip("<>")
+                "<blank>", "___ ") for i in XMB[:, :].squeeze().tolist() if i])
 
         XMB = model_utils.prepare_position_embeddings(
             opt, text_encoder.encoder, XMB.unsqueeze(-1))
 
-        sequence_all["event"] = init
-        sequence_all["effect_type"] = attr
+        words = init.split()
+        sequence_all["event"] = " ".join(words[:-1]) if len(words) > 1 else ""
+        sequence_all["relation"] = words[-1]
 
         lm_probs = lm_model(XMB.unsqueeze(1), sequence_mask=MMB)
         dist = lm_probs[:, -1, :].squeeze()
